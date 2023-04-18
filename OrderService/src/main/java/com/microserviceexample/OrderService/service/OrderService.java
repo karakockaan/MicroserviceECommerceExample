@@ -1,5 +1,6 @@
 package com.microserviceexample.OrderService.service;
 
+import com.microserviceexample.OrderService.dto.InventoryResponse;
 import com.microserviceexample.OrderService.dto.OrderRequest;
 import com.microserviceexample.OrderService.model.Order;
 import com.microserviceexample.OrderService.model.OrderItems;
@@ -7,7 +8,9 @@ import com.microserviceexample.OrderService.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -18,6 +21,9 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private WebClient webClient;
 
     public void insertOrder(OrderRequest orderRequest){
         Order order = Order.builder()
@@ -34,6 +40,26 @@ public class OrderService {
         }).collect(Collectors.toList());
 
         order.setOrderItemsList(orderItemsList);
-        orderRepository.save(order);
+
+        List<String> productCodeList = orderItemsList.stream()
+                .map(OrderItems::getProductCode).collect(Collectors.toList());
+
+        //call inventory service and insert order if product is in stock
+        InventoryResponse[] inventoryResponseArray = webClient.get()
+                .uri("http://localhost:8189/api/inventory", uriBuilder ->
+                    uriBuilder.queryParam("productCodeList", productCodeList).build())
+                .retrieve()
+                .bodyToMono(InventoryResponse[].class)
+                .block();
+
+        //Eger tum urunler stokta varsa true donecek.
+        boolean isInStock = Arrays.stream(inventoryResponseArray).allMatch(InventoryResponse::isInStock);
+
+        if(isInStock){
+            orderRepository.save(order);
+        }else{
+            throw new IllegalArgumentException("Some Products is not in stock.");
+        }
+
     }
 }
