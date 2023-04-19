@@ -1,7 +1,7 @@
-package com.microserviceexample.InventoryService.service;
+package com.microserviceexample.discoveryserver.service;
 
-import com.microserviceexample.InventoryService.dto.InventoryResponse;
-import com.microserviceexample.InventoryService.repository.InventoryRepository;
+import com.microserviceexample.discoveryserver.dto.InventoryResponse;
+import com.microserviceexample.discoveryserver.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

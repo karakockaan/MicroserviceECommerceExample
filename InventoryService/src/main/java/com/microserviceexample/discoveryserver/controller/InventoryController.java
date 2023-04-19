@@ -1,7 +1,7 @@
-package com.microserviceexample.InventoryService.controller;
+package com.microserviceexample.discoveryserver.controller;
 
-import com.microserviceexample.InventoryService.dto.InventoryResponse;
-import com.microserviceexample.InventoryService.service.InventoryService;
+import com.microserviceexample.discoveryserver.dto.InventoryResponse;
+import com.microserviceexample.discoveryserver.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

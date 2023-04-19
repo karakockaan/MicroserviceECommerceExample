@@ -17,6 +17,6 @@ public class Order {
     private Long id;
     private String orderNumber;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<OrderItems> orderItemsList;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private transient List<OrderItems> orderItemsList;
 }

@@ -1,4 +1,4 @@
-package com.microserviceexample.InventoryService.dto;
+package com.microserviceexample.discoveryserver.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

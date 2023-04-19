@@ -1,4 +1,4 @@
-package com.microserviceexample.InventoryService.model;
+package com.microserviceexample.discoveryserver.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
